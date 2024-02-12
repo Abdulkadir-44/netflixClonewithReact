@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
 import netflixBG from '../assets/netflixBg.jpg'
 import { Link } from 'react-router-dom'
-import Content from '../components/Content' 
-import {useSelector,useDispatch} from 'react-redux'
-import {changeLanguage} from '../redux/features/languageSlice'
+import Content from '../components/Content'
+import { useSelector, useDispatch } from 'react-redux'
+import { changeLanguage } from '../redux/features/languageSlice'
 
 const Home = () => {
 
-    const {value} = useSelector(state=>state.language)
-    const dispatch=useDispatch();
+    const { value } = useSelector(state => state.language)
+    const dispatch = useDispatch();
 
     const handleChange = (e) => {
-        dispatch(changeLanguage(e.target.value))
-       
-    }
 
-    console.log(value);
+        dispatch(changeLanguage(e.target.value))
+    }
 
     return (
         <>
@@ -38,13 +36,19 @@ const Home = () => {
                                 </select>
                             </div>
                             {
-                                value === 'Türkçe' ? <Link to="/register" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Kayıt Ol</Link> : <Link to="/register" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Sign In</Link>
+                                value === 'Türkçe' ? <div className='flex gap-x-2'>
+                                    <Link to="/login" className='bg-netfixColor py-1 text-sm px-3 rounded-md hover:bg-red-700 duration-200'>Oturum Aç</Link> 
+                                    <Link to="/register" className='bg-netfixColor py-1 text-sm px-3 rounded-md hover:bg-red-700 duration-200'>Kayıt Ol</Link>
+                                </div> : <div className='flex gap-x-2'>
+                                <Link to="/login" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Sign In</Link> 
+                                <Link to="/register" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Register</Link>
+                                </div>
                             }
                         </div>
                     </header>
                     <div className='mt-9 content text-white w-[85%] mx-auto h-[500px] font-poppins  flex flex-col justify-center items-center'>
                         {/* Çok fazla yer kapladığı için content kısmını başka bir componentte yazdım */}
-                        <Content/>
+                        <Content />
                     </div>
                 </div>
             </div>
