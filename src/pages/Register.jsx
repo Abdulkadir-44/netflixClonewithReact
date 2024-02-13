@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import {register} from '../firebase/Firebase'
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   // Kullanıcımın kayıt olabilmesi için login fonksiyonu dahil edildi,daha sonra kullanıcı kayıt olduğunda navigate ile home sayfasına yönlendirildi useNavigate() aynı zamanda kullanıcının bilgisi olsun diye toast eklentisi eklendi ve sayfanın başlık çubuğu içeriği değiştirildi ta ki bizim login fonksiyonundan cevap gelene kadar bu sayede kullanıcıya kayıt işleminin yapıldığına dair işlemler gösterildi 
@@ -31,6 +32,7 @@ const Register = () => {
         navigate('/',{
           replace:true
         })
+        toast.success('Kayıt başarılı...') ;
         hideLoader();
       }, 2700);
       }

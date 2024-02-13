@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom'
 import Content from '../components/Content'
 import { useSelector, useDispatch } from 'react-redux'
 import { changeLanguage } from '../redux/features/languageSlice'
-
+import { logout } from '../firebase/Firebase'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 const Home = () => {
-
+    const navigate = useNavigate();
     const { value } = useSelector(state => state.language)
     const dispatch = useDispatch();
 
@@ -14,6 +16,14 @@ const Home = () => {
 
         dispatch(changeLanguage(e.target.value))
     }
+
+    const handleLogout = async () => {
+        await logout();
+        toast.success('Çıkış yapıldı...')
+
+
+    }
+    const { isLogin } = useSelector(state => state.user);
 
     return (
         <>
@@ -28,21 +38,40 @@ const Home = () => {
                         </div>
                         <div className='list-ıtems flex gap-x-6'>
 
-                            <div className='border-1 px-2 border-gray-500 rounded-sm'>
-                                <i className="fa">&#xf1ab;</i>
-                                <select value={value} onChange={handleChange} className='text-white text-sm py-1 px-2 outline-none bg-selectItemColor'>
-                                    <option value="Türkçe">Türkçe</option>
-                                    <option value="English">English</option>
-                                </select>
+                            <div className='flex items-center'>
+                                <div className='border-1 border-gray-500 rounded-sm px-1 bg-selectItemColor'>
+                                    <i className="fa">&#xf1ab;</i>
+                                    <select value={value} onChange={handleChange} className=' text-white text-sm py-1 px-2 outline-none bg-selectItemColor'>
+                                        <option value="Türkçe">Türkçe</option>
+                                        <option value="English">English</option>
+                                    </select>
+                                </div>
                             </div>
                             {
-                                value === 'Türkçe' ? <div className='flex gap-x-2'>
-                                    <Link to="/login" className='bg-netfixColor py-1 text-sm px-3 rounded-md hover:bg-red-700 duration-200'>Oturum Aç</Link> 
-                                    <Link to="/register" className='bg-netfixColor py-1 text-sm px-3 rounded-md hover:bg-red-700 duration-200'>Kayıt Ol</Link>
-                                </div> : <div className='flex gap-x-2'>
-                                <Link to="/login" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Sign In</Link> 
-                                <Link to="/register" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Register</Link>
-                                </div>
+                                isLogin === true ? (
+                                    value === 'Türkçe' ? (
+                                        <div className='flex items-center gap-x-3'>
+                                            <div onClick={() => setAvatarIsClicked(!avatarIsClicked)} className='bg-netfixColor w-11 h-11 rounded-full inline-flex items-center justify-center cursor-pointer hover:bg-red-700'>A</div>
+                                            <button onClick={handleLogout} className='  bg-netfixColor h-8 items-center  text-sm px-2 rounded-md hover:bg-red-700 duration-200'
+                                            >Çıkış</button>
+                                        </div>
+                                    ):(
+                                        <div className='flex items-center gap-x-3'>
+                                        <div onClick={() => setAvatarIsClicked(!avatarIsClicked)} className='bg-netfixColor w-11 h-11 rounded-full inline-flex items-center justify-center cursor-pointer hover:bg-red-700'>A</div>
+                                        <button onClick={handleLogout} className='  bg-netfixColor h-8 items-center  text-sm px-2 rounded-md hover:bg-red-700 duration-200'
+                                        >Logout</button>
+                                    </div>
+                                    )
+
+                                ) : (
+                                    value === 'Türkçe' ? <div className='flex gap-x-2'>
+                                        <Link to="/login" className='bg-netfixColor py-1 text-sm px-3 rounded-md hover:bg-red-700 duration-200'>Oturum Aç</Link>
+                                        <Link to="/register" className='bg-netfixColor py-1 text-sm px-3 rounded-md hover:bg-red-700 duration-200'>Kayıt Ol</Link>
+                                    </div> : <div className='flex gap-x-2'>
+                                        <Link to="/login" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Sign In</Link>
+                                        <Link to="/register" className='bg-netfixColor py-1 text-sm px-6 rounded-md hover:bg-red-700 duration-200'>Register</Link>
+                                    </div>
+                                )
                             }
                         </div>
                     </header>

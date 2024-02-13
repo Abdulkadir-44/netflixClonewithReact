@@ -1,13 +1,30 @@
 import React, { useState } from 'react'
 import netflixBG from '../assets/netflixBg.jpg'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import {login} from '../firebase/Firebase'
+import toast from 'react-hot-toast'
 
 const Sign  = () => {
 
   const { value } = useSelector(state => state.language)
   const [clicked, setClicked] = useState(false);
 
+  const navigate=useNavigate();
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  
+  const handleSubmit = async e=>{
+    e.preventDefault();
+    const user = await login(email,password)
+    if(user)
+    {
+        toast.success('Giriş Başarılı...')
+        navigate('/',{
+          replace:true
+        })
+    }
+  }
 
   return (
     <>
@@ -29,10 +46,12 @@ const Sign  = () => {
                   <div className='w-full h-full bg-black bg-opacity-60 rounded-md '></div>
                   <div className='absolute top-0 left-0 text-white w-full h-full px-10 py-10  '>
                     <h1 className=' text-3xl font-bold mb-8'>Oturum Aç</h1>
-                    <form>
-                      <input placeholder='E-posta veya telefon numarası' className='  w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="email" />
-                      <input placeholder='Şifre' className=' mt-5 w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="email" />
-                      <button className='bg-netfixColor mt-5 w-full py-2 rounded-md hover:bg-red-700'>Oturum Aç</button>
+                    <form onSubmit={handleSubmit}>
+                      <input onChange={e=>setEmail(e.target.value)} 
+                      placeholder='E-posta veya telefon numarası' className='  w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="email" />
+                      <input  onChange={e=>setPassword(e.target.value)} 
+                      placeholder='Şifre' className=' mt-5 w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="password" />
+                      <button type='submit' className='bg-netfixColor mt-5 w-full py-2 rounded-md hover:bg-red-700'>Oturum Aç</button>
                       <p className='text-center my-4'>OR</p>
                       <button className='bg-gray-600 bg-opacity-45 w-full py-2 rounded-md hover:bg-gray-600'>Oturum Açma Kodu Kullan</button>
                       <p className='text-sm text-center mt-2 cursor-pointer hover:text-netfixColor hover:text-opacity-70 hover:underline'>Parolayı mı unuttunuz?</p>
@@ -67,10 +86,12 @@ const Sign  = () => {
                   <div className='w-full h-full bg-black bg-opacity-60 rounded-md '></div>
                   <div className='absolute top-0 left-0 text-white w-full h-full px-10 py-10'>
                     <h1 className=' text-3xl font-bold mb-8'>Sign In</h1>
-                    <form>
-                      <input placeholder='Email or phone number' className='  w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="email" />
-                      <input placeholder='Password' className=' mt-5 w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="email" />
-                      <button className='bg-netfixColor mt-5 w-full py-2 rounded-md hover:bg-red-700'>Sign In</button>
+                    <form onSubmit={handleSubmit}>
+                      <input onChange={e=>setEmail(e.target.value)} 
+                      placeholder='Email or phone number' className='  w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="email" />
+                      <input onChange={e=>setPassword(e.target.value)}
+                       placeholder='Password' className=' mt-5 w-full outline-none rounded-sm bg-transparent border-1 border-gray-400 p-3' type="password" />
+                      <button type='submit' className='bg-netfixColor mt-5 w-full py-2 rounded-md hover:bg-red-700'>Sign In</button>
                       <p className='text-center my-4'>OR</p>
                       <button className='bg-gray-600 bg-opacity-45 w-full py-2 rounded-md hover:bg-gray-600'>Use a Sign In Code</button>
                       <p className='text-sm text-center mt-2 cursor-pointer hover:text-netfixColor hover:text-opacity-70 hover:underline'>Forgot password?</p>

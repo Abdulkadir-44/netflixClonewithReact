@@ -1,6 +1,8 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged ,signOut } from 'firebase/auth'
 import { initializeApp } from "firebase/app";
 import { toast } from 'react-hot-toast'
+import { store } from '../redux/app/store'
+import { userIsLogin ,userIsLogout} from '../redux/features/userSlice'
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_REACT_APP_API_KEY,
@@ -20,13 +22,7 @@ const auth = getAuth();
 export const register = async (email, password) => {
     try {
         const { user } = await createUserWithEmailAndPassword(auth, email, password)
-
-        if (user) {
-            setTimeout(() => {
-                toast.success('Kayıt başarılı...')
-            }, 2700);
-            return user;
-        }
+        return user;
 
     } catch (err) {
         toast.error(err.message)
@@ -41,5 +37,24 @@ export const login = async (email, password) => {
         toast.error(err.message);
     }
 }
+
+export const logout = async ()=>{
+    try{
+        await signOut(auth)
+        store.dispatch(userIsLogout())
+        return true
+    }catch(err)
+    {
+        toast.error(err.message)
+    }
+}
+
+onAuthStateChanged(auth, (user) => {
+    
+        if (user) {
+            store.dispatch(userIsLogin(true))
+        }
+    
+})
 
 export default app

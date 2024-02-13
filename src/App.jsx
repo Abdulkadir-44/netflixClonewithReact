@@ -8,13 +8,14 @@ import {Toaster} from 'react-hot-toast'
 const App = () => {
   return (
   <>
-    <Toaster position='top-right' toastOptions={{
-      duration:1600,
+    <Toaster position='top-center' toastOptions={{
+      duration:1800,
       style:{
         background:'#E50914',
         opacity:0.7,
         color:'white',
-        marginTop:'60px'
+        marginTop:'60px',
+        width:'240px'
       }
     }}/>
 
